@@ -1,0 +1,68 @@
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Node {
+    string patientID;
+    Node* next;
+};
+
+Node* head = NULL;
+
+
+void addPatient(string id) {
+    Node* newNode = new Node;
+    newNode->patientID = id;
+    newNode->next = NULL;
+
+    if (head == NULL) {
+        head = newNode;
+    } else {
+        Node* temp = head;
+        while (temp->next != NULL)
+            temp = temp->next;
+        temp->next = newNode;
+    }
+}
+
+
+void displayPatients() {
+    Node* temp = head;
+    while (temp != NULL) {
+        cout << temp->patientID;
+        if (temp->next != NULL)
+            cout << " -> ";
+        temp = temp->next;
+    }
+    cout << endl;
+}
+
+void servePatient() {
+    if (head == NULL) {
+        cout << "No patients waiting." << endl;
+        return;
+    }
+    Node* temp = head;       
+    head = head->next;      
+    cout << "Patient " << temp->patientID << " is being served." << endl;
+    delete temp;            
+}
+
+int main() {
+    addPatient("P101");
+    addPatient("P102");
+    addPatient("P103");
+    addPatient("P104");
+
+    cout << "Waiting Patients:" << endl;
+    displayPatients();
+
+    cout << endl;
+    servePatient();
+
+    cout << endl << "Updated Queue:" << endl;
+    displayPatients();
+
+    return 0;
+}
