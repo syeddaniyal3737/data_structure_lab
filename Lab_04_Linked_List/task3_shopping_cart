@@ -1,0 +1,88 @@
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+struct Node {
+    string productID;
+    Node* next;
+};
+
+Node* head = NULL;
+
+
+void addProduct(string id) {
+    Node* newNode = new Node;
+    newNode->productID = id;
+    newNode->next = NULL;
+
+    if (head == NULL) {
+        head = newNode;
+    } else {
+        Node* temp = head;
+        while (temp->next != NULL)
+            temp = temp->next;
+        temp->next = newNode;
+    }
+}
+
+void displayCart() {
+    Node* temp = head;
+    while (temp != NULL) {
+        cout << temp->productID;
+        if (temp->next != NULL)
+            cout << " -> ";
+        temp = temp->next;
+    }
+    cout << endl;
+}
+
+
+void removeProduct(string id) {
+    if (head == NULL) {
+        cout << "Cart is empty." << endl;
+        return;
+    }
+
+   
+    if (head->productID == id) {
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+        return;
+    }
+
+    
+    Node* current = head;
+    while (current->next != NULL && current->next->productID != id)
+        current = current->next;
+
+    if (current->next == NULL) {
+        cout << "Product not found." << endl;
+    } else {
+        Node* temp = current->next;         
+        current->next = temp->next;        
+        delete temp;
+    }
+}
+
+int main() {
+    addProduct("P101");
+    addProduct("P205");
+    addProduct("P310");
+    addProduct("P415");
+
+    cout << "Shopping Cart:" << endl;
+    displayCart();
+
+    string id;
+    cout << endl << "Remove Product: ";
+    cin >> id;
+    removeProduct(id);
+
+    cout << endl << "Updated Cart:" << endl;
+    displayCart();
+
+    return 0;
+}
